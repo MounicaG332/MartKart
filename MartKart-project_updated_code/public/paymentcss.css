@@ -1,0 +1,115 @@
+body {
+    background-image: url('https://media.gettyimages.com/id/1361939986/de/foto/konzeptionelle-ansicht-eines-intelligenten-lautsprechers.jpg?s=612x612&w=0&k=20&c=uznyt-qgchqxaqkAuctjfa4oIHZxHRxfmjMO5Dugd5w=');
+    /* background-size: cover;  */
+    /* background-position: center;  */
+    background-size: 100% 100%; 
+    background-repeat: no-repeat;  /* Soft background color */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    font-family: Arial, sans-serif; /* Classic font */
+}
+
+.container {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    padding: 40px;
+    width: 50%; /* Adjust the width for a more balanced look */
+    max-width: 500px;
+    text-align: center;
+    margin-top: 0; /* Ensure no extra margin at the top */
+    margin-bottom: 0; /* Ensure no extra margin at the bottom */
+}
+
+h2 {
+    margin-bottom: 20px;
+    color: #333;
+    font-family: 'Georgia', serif; /* Elegant heading font */
+    font-size: 2rem; /* Larger font size for the heading */
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+.payment-option {
+    display: flex;
+    align-items: flex-start;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+    text-align: left; /* Ensure text aligns properly */
+    background-color: #f9f9f9; /* Light background for the options */
+}
+
+.payment-option input[type="radio"] {
+    margin-top: 3px; /* Align radio button with text */
+    margin-right: 10px;
+}
+
+.payment-option strong {
+    display: block;
+    font-size: 16px; /* Slightly larger font for emphasis */
+}
+
+.payment-option p {
+    margin: 5px 0 0 0;
+    font-size: 14px; /* Slightly larger font for readability */
+}
+
+button {
+    background: linear-gradient(to right, #8d68c5, #e34494);
+    border: none;
+    border-radius: 5px;
+    color: white;
+    padding: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    width: 50%;
+    align-self: center;
+    margin-top: 20px; /* Extra margin for separation */
+    font-family: 'Arial', sans-serif; /* Simple font for the button */
+}
+
+button:hover {
+    background: linear-gradient(to right, #8d68c5, #e34494);
+	color: white;
+	padding: 10px 20px;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+}
+
+hr {
+    border: 0;
+    border-top: 1px solid #ccc;
+    margin: 20px 0; /* More space around the hr */
+}
+
+.error-message {
+    color: red;
+    font-size: 12px;
+    text-align: left;
+}
+
+#messageBox {
+    display: none;
+    margin-top: 10px;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+#messageBox.success {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+#messageBox.error {
+    background-color: #f8d7da;
+    color: #721c24;
+}

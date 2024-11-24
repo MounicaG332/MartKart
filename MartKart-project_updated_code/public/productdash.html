@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Dashboard</title>
+    <!-- <link rel="stylesheet" href="Homecssfile.css"> Link to your CSS file -->
+     <style>
+        /* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Poppins&family=Ubuntu:wght@300;700&display=swap');
+
+/* Global Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    color: rgb(33, 33, 34);
+    background-color: snow;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+/* Navbar */
+.navbar {
+    background-color: rgb(108, 105, 110);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 3px 20px;
+    line-height: 2rem;
+    color: white;
+    width: 100%;
+}
+
+.navbar .nav h1 {
+    font-size: 2rem;
+    color: whitesmoke;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.navbar .right {
+    display: flex;
+    align-items: center;
+}
+
+.navbar .right .list {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.navbar .right .list li {
+    margin-left: 20px;
+}
+
+.navbar .right .list li a, 
+.navbar .right .list li button {
+    color: white;
+    text-decoration: none;
+    padding: 3px 20px;
+    border: none;
+    border-radius: 3px;
+    transition: background-color 0.3s;
+}
+
+.navbar .right .list li a:hover, 
+.navbar .right .list li button:hover {
+    background-color: #8a8888;
+}
+
+/* Container */
+.container {
+    width: 90%;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.container h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+/* Search Section */
+.search {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 0;
+}
+
+.search-box {
+    width: 300px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px 0 0 5px;
+    outline: none;
+    color: #a9a9a9;
+}
+
+.search-btn {
+    padding: 10px;
+    background-color: #333;
+    color: white;
+    border: none;
+    border-radius: 0 5px 5px 0;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.search-btn:hover {
+    background-color: #555;
+}
+
+/* Add Product Form */
+.add-product-section {
+    margin-bottom: 20px;
+}
+
+#add-product-form {
+    display: flex;
+    flex-direction: column;
+}
+
+#add-product-form input, #add-product-form textarea {
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+#add-product-form button {
+    padding: 10px;
+    background: linear-gradient(to right, #8d68c5, #e34494);
+
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#add-product-form button:hover {
+    background-color: #219150;
+}
+
+/* Products Table */
+#products-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#products-table th, #products-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+    vertical-align: middle; /* Ensure vertical alignment in the middle */
+}
+
+#products-table th {
+    background-color: #f4f4f4;
+}
+
+#products-table td:last-child {
+    width: 120px; /* Adjust as needed to fit the button */
+}
+
+/* Delete Button */
+.delete-btn {
+    padding: 2px 5px;
+    background: linear-gradient(to right, #8d68c5, #e34494);
+    /* Bootstrap's danger color for delete actions */
+    color: white;
+    border: none;
+    font-size: 14px;margin-left: 0%;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.delete-btn:hover {
+    background: linear-gradient(to right, #8d68c5, #e34494);
+
+    transform: scale(1.05);
+}
+
+.delete-btn:focus {
+    outline: none;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+    .container {
+        width: 90%;
+        padding: 10px;
+    }
+}
+
+     </style>
+</head>
+<body>
+    
+
+    <main>
+        <div class="container">
+            <h1>Product Management</h1>
+            
+            
+
+            <div class="add-product-section">
+                <form id="add-product-form">
+                    <input type="text" id="product-title" placeholder="Product Title" required>
+                    <input type="number" id="product-price" placeholder="Product Price" required>
+                    <input type="text" id="product-category" placeholder="Category">
+                    <input type="number" id="product-quantity" placeholder="Quantity Available">
+                    <textarea id="product-description" placeholder="Description"></textarea>
+                    <input type="text" id="product-image-url" placeholder="Image URL">
+                    <button type="submit">Add Product</button>
+                </form>
+            </div>
+
+            <!-- Product List Section -->
+            <section>
+                <h2>Products</h2>
+                <table id="products-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Title</th>
+                            <th>Price</th>
+                            <th>Category</th>
+                            <th>Quantity</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Product rows will be inserted here -->
+                    </tbody>
+                </table>
+            </section>
+        </div>
+    </main>
+
+    <script>
+        // script.js
+
+        document.addEventListener('DOMContentLoaded', () => {
+    fetchProducts();
+
+    const addProductForm = document.getElementById('add-product-form');
+    addProductForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const product = {
+            title: document.getElementById('product-title').value,
+            price: document.getElementById('product-price').value,
+            category: document.getElementById('product-category').value,
+            quantity_available: document.getElementById('product-quantity').value, // Updated field name
+            description: document.getElementById('product-description').value,
+            image_url: document.getElementById('product-image-url').value
+        };
+
+        try {
+            const response = await fetch('/api/products', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(product)
+            });
+
+            if (response.ok) {
+                addProductForm.reset();
+                fetchProducts();
+            } else {
+                console.error('Error adding product:', await response.json());
+            }
+        } catch (error) {
+            console.error('Error adding product:', error);
+        }
+    });
+});
+
+async function fetchProducts() {
+    try {
+        const response = await fetch('/api/products');
+        const products = await response.json();
+        const productsTableBody = document.querySelector('#products-table tbody');
+        productsTableBody.innerHTML = '';
+        products.forEach(product => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${product.Product_ID}</td>
+                <td>${product.Title}</td>
+                <td>$${product.Price}</td>
+                <td>${product.Category}</td>
+                <td>${product.Quantity_Available}</td>
+                <td>
+                    <button class="delete-btn" onclick="deleteProduct(${product.Product_ID})">Delete</button>
+                </td>
+            `;
+            productsTableBody.appendChild(row);
+        });
+    } catch (error) {
+        console.error('Error fetching products:', error);
+    }
+}
+
+async function deleteProduct(productId) {
+    try {
+        await fetch(`/api/products/${productId}`, {
+            method: 'DELETE'
+        });
+        fetchProducts();
+    } catch (error) {
+        console.error('Error deleting product:', error);
+    }
+}
+
+    </script> <!-- Link to your JS file -->
+</body>
+</html>

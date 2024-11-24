@@ -1,0 +1,82 @@
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;500;700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: url('https://media.gettyimages.com/id/1361939986/de/foto/konzeptionelle-ansicht-eines-intelligenten-lautsprechers.jpg?s=612x612&w=0&k=20&c=uznyt-qgchqxaqkAuctjfa4oIHZxHRxfmjMO5Dugd5w=');
+    background-size: cover; /* Adjust to cover the entire viewport */
+    background-repeat: no-repeat;
+}
+
+.container {
+    background: snow;
+    border-radius: 5px;
+    padding: 2rem;
+    width: 500px;
+    margin-top: 25px;
+    margin-bottom: 25px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+h1 {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    color: #333;
+}
+
+/* Style for the form labels */
+label {
+    display: block;
+    margin-bottom: 0.3rem;
+    color: #333;
+}
+
+/* Style for form inputs and textarea */
+input[type="text"], textarea {
+    width: 100%;
+    padding: 0.4rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-bottom: 1rem;
+    font-size: 1rem;
+}
+
+/* Style for the submit button */
+button {
+    background: linear-gradient(to right, #8d68c5, #e34494);
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-align: center;
+    font-size: 1rem; /* Adjust font size */
+    align-self: center; /* Center the button */
+}
+
+button:hover {
+    background: linear-gradient(to right, #e34494, #8d68c5);
+}
+
+button:focus {
+    outline: none;
+}
+
+/* Style for the error message */
+#error-message {
+    color: red;
+    font-size: 1rem;
+    display: none;
+    text-align: center;
+}

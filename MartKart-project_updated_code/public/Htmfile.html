@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Registration</title>
+  <link rel="stylesheet" href="cssfile.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <script>
+    function checkMobileLength() {
+      const mobile = document.getElementById('mobile');
+      if (mobile.value.length > 10) {
+        mobile.value = mobile.value.slice(0, 10);
+        displayMessage('Mobile number must be 10 digits long', 'error');
+      }
+    }
+    function checkPasswordMatch() {
+      const password = document.getElementById('password').value;
+      const confirmedPassword = document.getElementById('confirmedPassword').value;
+      const matchMessage = document.getElementById('matchMessage');
+
+      if (password !== confirmedPassword) {
+        matchMessage.textContent = 'Passwords do not match';
+      } else {
+        matchMessage.textContent = '';
+      }
+    }
+    function displayMessage(message, type) {
+      const messageBox = document.getElementById('messageBox');
+      messageBox.textContent = message;
+      messageBox.className = type;
+      messageBox.style.display = 'block';
+    }
+    function registerUser(event) {
+      event.preventDefault();
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+      const confirmedPassword = document.getElementById('confirmedPassword').value;
+      const phone_number = document.getElementById('mobile').value;
+      if (password !== confirmedPassword) {
+        displayMessage('Passwords do not match', 'error');
+        return;
+      }
+      if (phone_number.length !== 10) {
+        displayMessage('Mobile number must be 10 digits long', 'error');
+        return;
+      }
+      fetch('/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ username, password, phone_number })
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          displayMessage('User registered successfully', 'success');
+          setTimeout(() => {
+            window.location.href = 'login.html';
+          }, 2000);
+        } else {
+          displayMessage('Error: ' + data.message, 'error');
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        displayMessage('An error occurred', 'error');
+      });
+    }
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('mobile').addEventListener('input', checkMobileLength);
+      document.getElementById('password').addEventListener('input', checkPasswordMatch);
+document.getElementById('confirmedPassword').addEventListener('input', checkPasswordMatch);
+      document.getElementById('registerForm').addEventListener('submit', registerUser);
+    });
+  </script>
+</head>
+<body>
+  <div class="container">
+    <h2>Registration Form</h2>
+    <form id="registerForm">
+      <label for="username">Username</label><br>
+      <div class="userArea">
+        <i class="fa-solid fa-user"></i>
+        <input type="text" id="username" name="username" placeholder="Type your username" required>
+      </div> <hr><br>
+      <label for="password" class="username">Password</label>
+      <div class="userArea1">
+        <i class="fa-solid fa-key"></i>
+        <input type="password" name="password" id="password" placeholder="Type your password" maxlength="10" required>
+      </div><hr><br>
+      <label for="confirmedPassword" class="username">Confirmed Password</label>
+      <div class="userArea2">
+        <i class="fa-solid fa-key"></i>
+        <input type="password" name="confirmedPassword" id="confirmedPassword" placeholder="Confirm your password" maxlength="10" required>
+      </div>
+      <span id="matchMessage" class="error-message"></span>
+      <hr><br>
+      <label for="mobile" class="username">Mobile No</label>
+      <div class="userArea3">
+        <i class="fa-solid fa-phone"></i>
+        <input type="text" name="mobile" id="mobile" placeholder="Type your mobile number" maxlength="10" required>
+      </div><hr>
+      <button type="submit">Register</button>
+    </form>
+    <div id="messageBox"></div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Page</title>
+    <link rel="stylesheet" href="paymentcss.css">
+    <link rel="icon" href="img/logo martkart.png">
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+</head>
+<body>
+    <div class="container">
+        <form id="paymentForm" method="POST">
+            <p>Pay using UPI/Cash on Delivery<a href="#" class="info"></a></p>
+            <div class="payment-option">
+                <input type="radio" name="payment-method" id="cod" value="cod" checked>
+                <label for="cod">
+                    <div>
+                        <strong>Cash on Delivery/Pay on Delivery</strong>
+                        <p>Cash, UPI accepted. <a href="#" class="info"></a></p>
+                    </div>
+                </label>
+            </div>
+            <div class="payment-option">
+                <input type="radio" name="payment-method" id="upi" value="upi">
+                <label for="upi">
+                    <div>
+                        <strong>UPI Payments</strong>
+                        <p>Google Pay, PhonePe, Paytm and more</p>
+                    </div>
+                </label>
+            </div>
+            <button type="submit" class="continue-button">Continue</button>
+        </form>
+    </div>
+    <script>
+        document.getElementById('paymentForm').addEventListener('submit', async function(event) {
+            event.preventDefault(); // Prevent the form from submitting normally
+    
+            const selectedPaymentMethod = document.querySelector('input[name="payment-method"]:checked').value;
+    
+            // Confirm order and get order ID
+            let orderId;
+            if (selectedPaymentMethod === 'cod') {
+                try {
+                    const orderResponse = await fetch('/api/confirm-order', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ paymentMethod: 'cod' }) // Adjust payload as needed
+                    });
+                    const orderData = await orderResponse.json();
+                    orderId = orderData.orderId;
+                    // Redirect to order confirmed page
+                    window.location.href = 'orderconfirmed.html';
+                } catch (error) {
+                    console.error('Error confirming order:', error);
+                    alert('Failed to confirm order. Please try again.');
+                }
+            } else if (selectedPaymentMethod === 'upi') {
+                try {
+                    const orderResponse = await fetch('/api/confirm-order', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ paymentMethod: 'upi' }) // Adjust payload as needed
+                    });
+                    const orderData = await orderResponse.json();
+                    orderId = orderData.orderId; // Corrected: use orderId (lowercase)
+                    handleUPIPayment(orderId);
+                } catch (error) {
+                    console.error('Error confirming order:', error);
+                    alert('Failed to initiate payment. Please try again.');
+                }
+            }
+        });
+    
+        function handleUPIPayment(orderId) { // Corrected: pass orderId (lowercase)
+            const options = {
+                "key_id": "rzp_test_EUId8Agf5IT88P",
+                // Your Razorpay Key ID
+                "amount": 10000, // Amount in paise
+                "currency": "INR",
+                "name": "MartKart",
+                "description": "Test Transaction",
+                "order_id": orderId, // Corrected: use orderId (lowercase)
+                "handler": function (response){
+                    alert("Payment Successful");
+                    // Process the response and verify payment
+                    fetch('/verify-payment', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            payment_id: response.razorpay_payment_id,
+                            order_id: response.razorpay_order_id,
+                            signature: response.razorpay_signature
+                        })
+                    }).then(res => res.json())
+                    .then(data => {
+                        if(data.success) {
+                            window.location.href = 'orderconfirmed.html';
+                        } else {
+                            alert('Payment verification failed');
+                        }
+                    }).catch(err => console.error(err));
+                },
+                "prefill": {
+                    "name": "Customer Name",
+                    "email": "customer@example.com",
+                    "contact": "9999999999"
+                },
+                "notes": {
+                    "address": "MartKart Office"
+                },
+                "theme": {
+                    "color": "#3399cc"
+                }
+            };
+            const rzp = new Razorpay(options);
+            rzp.open();
+        }
+    </script>
+</body>
+</html>

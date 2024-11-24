@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="addresscss.css">
+    <link rel="icon" href="img/logo martkart.png">
+    <title>Address Page</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Shipping Address</h1>
+        <form id="addressForm">
+            <label for="fullName">Full Name:</label>
+            <input type="text" id="fullName" name="fullName" placeholder="Enter your full name" required>
+            <label for="address_line">Address Line:</label>
+            <textarea id="address_line" name="address_line" placeholder="Enter your address" required></textarea>
+            <div>
+                <label for="city">City:</label>
+                <input type="text" id="city" name="city" placeholder="Enter your city" required>
+                <label for="state">State:</label>
+                <input type="text" id="state" name="state" placeholder="Enter your state" required>
+            </div>
+            <label for="postal_code">Postal Code:</label>
+            <input type="text" id="postal_code" name="postal_code" placeholder="Enter your postal code" required>
+            <label for="country">Country:</label>
+            <input type="text" id="country" name="country" placeholder="Enter your country" required>
+            <button type="submit";>Save Address</button>
+        </form>
+        <div id="error-message" style="color: red; display: none;">Failed to save address. Please try again.</div>
+    </div>
+    <script>
+        document.getElementById('addressForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+
+            const fullName = document.getElementById('fullName').value;
+            const address_line = document.getElementById('address_line').value;
+            const city = document.getElementById('city').value;
+            const state = document.getElementById('state').value;
+            const postal_code = document.getElementById('postal_code').value;
+            const country = document.getElementById('country').value;
+            const addressData = { fullName, address_line, city, state, postal_code, country };
+
+            try {
+                const response = await fetch('/save-address', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(addressData)
+                });
+                if (response.ok) {
+                    window.location.href = 'paymentpage.html';
+                } else {
+                    const result = await response.json();
+                    alert(result.message || 'Failed to save address');
+                }
+            } catch (error) {
+                console.error('Error saving address:', error);
+                showError();
+            }
+        });
+
+        function showError() {
+            const errorMessage = document.getElementById('error-message');
+            errorMessage.style.display = 'block';
+        }
+    </script>
+</body>
+</html>

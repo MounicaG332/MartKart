@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Form</title>
+    <link rel="icon" href="img/logo martkart.png">
+    <link rel="stylesheet" href="logincss.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+          integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+</head>
+<body>
+<div class="container">
+    <h2 class="t-center">MartKart 🛒</h2>
+    <form id="loginForm" form="right" action="#">
+        <div class="inputDiv">
+            <label for="username" class="username">Username</label>
+            <div class="userArea">
+                <i class="fa-solid fa-user"></i><input type="text"  id="username" placeholder="Type your username">
+            </div>
+            <hr>
+        </div>
+        <div class="inputDiv">
+            <label for="password" class="password">Password</label>
+            <div class="userArea">
+                <i class="fa-solid fa-key"></i><input type="password" id="password" placeholder="Type your password">
+            </div>
+            <hr>
+        </div>
+        <button type="button" class="btn" onclick="Login(event)">Login</button>
+        <div class="formBottom">
+            <p class="signUp">Or Sign Up</p>
+            <a href="Htmfile.html" id="signUp">SIGN UP</a>
+        </div>
+        <p id="errorMsg" style="color: red; display: none;"></p>
+    </form>
+</div>
+<script>
+     async function Login(event) {
+        event.preventDefault(); // Prevent the form from submitting
+        console.log("Login function called");
+        
+        var username = document.getElementById("username").value;
+        var password = document.getElementById("password").value;
+        var errorMsg = document.getElementById("errorMsg");
+
+        if (username.trim() === "") {
+            errorMsg.innerText = "Please enter your username";
+            errorMsg.style.display = "block";
+            return;
+        }
+        if (password.trim() === "") {
+            errorMsg.innerText = "Please enter your password";
+            errorMsg.style.display = "block";
+            return;
+        }
+
+        // Send login data to the server
+        try {
+            const response = await fetch('/Login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ username, password })
+            });
+            console.log("Response received from server");
+            
+            const result = await response.json();
+            console.log("Result:", result);
+
+            if (response.ok) {
+                if (result.role === 2) {
+                    // Redirect admin users to the admin page
+                    window.location.assign('admindashboard.html');
+                } else if (result.role === 1) {
+                    // Redirect regular users to the user home page
+                    window.location.assign('Homemain.html');
+                } else {
+                    errorMsg.innerText = "Invalid role received";
+                    errorMsg.style.display = "block";
+                }
+            } else {
+                errorMsg.innerText = result.message;
+                errorMsg.style.display = "block";
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            errorMsg.innerText = 'An error occurred. Please try again later.';
+            errorMsg.style.display = "block";
+        }
+    }
+</script>
+</body>
+</html>

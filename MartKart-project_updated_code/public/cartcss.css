@@ -1,0 +1,146 @@
+/* Style for the main container of the shopping cart */
+/* General styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #b3e6e6;
+    background-image: url('https://media.gettyimages.com/id/1361939986/de/foto/konzeptionelle-ansicht-eines-intelligenten-lautsprechers.jpg?s=612x612&w=0&k=20&c=uznyt-qgchqxaqkAuctjfa4oIHZxHRxfmjMO5Dugd5w=');
+    background-size: 100% 100%; 
+    background-repeat: no-repeat; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+.container {
+    background-color:snow;
+    border-radius: 10px;
+    padding: 20px;
+    max-width: 900px;
+    width: 90%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+/* Style for the header of the cart */
+h1 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* Style for individual cart items */
+.item {
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    background-color: snow;
+}
+
+/* Style for the product image and buttons */
+.image {
+    flex: 1;
+    display: flex;
+    align-items: center;
+}
+
+.image img {
+    max-width: 150px;
+    height: auto;
+    margin-right: 20px;
+}
+
+.buttons {
+    display: flex;
+    flex-direction: column;
+}
+
+.delete-btn {
+    background: linear-gradient(to right, #8d68c5, #e34494);
+        color: #fff;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-right: 10px;
+    margin-left: 20px;
+}
+
+.delete-btn:hover {
+    background: linear-gradient(to right, #8d68c5, #e34494);}
+
+/* Style for the product description */
+.description {
+    flex: 2;
+    margin-right: 20px;
+}
+
+.description span {
+    display: block;
+    margin-left: 20px;
+    margin-bottom: 5px;
+}
+
+/* Style for quantity control */
+.quantity {
+    flex: 1;
+    display: flex;
+    align-items: center;
+}
+
+.quantity button {
+    background: linear-gradient(to right, #8d68c5, #e34494);
+        color: #fff;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin: 0 5px;
+    
+}
+
+.quantity button:hover {
+    background: linear-gradient(to right, #8d68c5, #e34494);}
+
+.quantity-input {
+    text-align: center;
+    width: 40px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin: 0 5px;
+    padding: 5px;
+}
+
+/* Style for the total price */
+.total-price {
+    flex: 1;
+    font-weight: bold;
+}
+
+/* Style for the buy now button */
+.buy-now-container {
+    flex: 1;
+    text-align: center;
+}
+
+.buy-now-btn {
+    background: linear-gradient(to right, #8d68c5, #e34494);
+        color: #fff;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.buy-now-btn:hover {
+    background: linear-gradient(to right, #8d68c5, #e34494);}
+
+/* Style for empty cart message */
+#cart-items p {
+    text-align: center;
+    color: #666;
+    font-size: 18px;
+}

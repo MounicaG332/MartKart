@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart</title>
+    <link rel="icon" href="img/logo martkart.png">
+    <link rel="stylesheet" href="cartcss.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Shopping Cart</h1>
+        <div id="cart-items"></div>
+    </div>
+    <script>
+        // Function to display cart items on the cart page
+        function displayCart() {
+            // Retrieve cart items from local storage
+            let cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+
+            // Get the container element to display cart items
+            let cartContainer = document.getElementById('cart-items');
+            // Clear the existing content
+            cartContainer.innerHTML = '';
+            // Check if the cart is empty
+            if (cartItems.length === 0) {
+                cartContainer.innerHTML = '<p>Your cart is empty.</p>';
+                return;
+            }
+            // Display each cart item
+            cartItems.forEach(item => {
+                let itemElement = document.createElement('div');
+                itemElement.classList.add('item');
+                itemElement.innerHTML = `
+                    <div class="image">
+                        <img src="${item.productImageUrl}" alt="${item.productName}" /> 
+                    <div class="buttons">                 
+                        <button class="delete-btn" onclick="removeItem(${item.productId})">Delete</button>
+                    </div>  </div>
+                    <div class="description">
+                        <span>Product ID: ${item.productId}</span>
+                        <span>Product Name: ${item.productName}</span>
+                        <span>Price: ${item.productPrice}</span>
+                    </div>
+                    <div class="quantity">
+                        <button class="minus-btn" onclick="decreaseQuantity(${item.productId})">-</button>
+                        <input type="text" class="quantity-input" value="${item.quantity}" readonly>
+                        <button class="plus-btn" onclick="increaseQuantity(${item.productId})">+</button>
+                    </div>
+                    <div class="total-price">${item.quantity * item.productPrice}</div>
+                    <div class="buy-now-container">
+                        <button class="buy-now-btn" onclick="buyNow(${item.productId})">Buy Now</button>
+                    </div>`;
+                cartContainer.appendChild(itemElement);
+            });
+        }
+        // Function to remove item from cart
+        function removeItem(productId) {
+            let cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+            cartItems = cartItems.filter(item => item.productId !== productId);
+            localStorage.setItem('cart', JSON.stringify(cartItems));
+            displayCart();
+        }
+        // Function to increase item quantity in cart
+        function increaseQuantity(productId) {
+            let cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+            let item = cartItems.find(item => item.productId === productId);
+            if (item) {
+                item.quantity++;
+                localStorage.setItem('cart', JSON.stringify(cartItems));
+                displayCart();
+            }
+        }
+        // Function to decrease item quantity in cart
+        function decreaseQuantity(productId) {
+            let cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+            let item = cartItems.find(item => item.productId === productId);
+            if (item && item.quantity > 1) {
+                item.quantity--;
+                localStorage.setItem('cart', JSON.stringify(cartItems));
+                displayCart();
+            }
+        }
+        // Function to handle buy now button click
+        function buyNow(productId) {
+            // Redirect to the checkout page
+            window.location.href = 'addresspage.html';
+        }
+        // Display cart items on page load
+        document.addEventListener('DOMContentLoaded', displayCart);
+    </script>
+</body>
+</html>

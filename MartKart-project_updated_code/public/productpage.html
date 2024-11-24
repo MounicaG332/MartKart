@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Details</title>
+    <link rel="icon" href="img/logo martkart.png">
+    <link rel="stylesheet" href="Homecssfile.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav">
+            <h1>MartKart</h1>
+        </div>
+        <div class="right">
+            <ul class="list">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="cartpage.html">Cart</a></li>
+                <li><a href="review-page.html">Review</a></li>
+                <li><button class="btn" onclick="logout()">Logout</button></li>
+            </ul>
+        </div> 
+    </nav>
+
+    <div id="product-details">
+        <!-- Product details will be inserted here dynamically -->
+    </div>
+
+    <script>
+        function logout() {
+            window.location.href = 'login.html';
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const urlParams = new URLSearchParams(window.location.search);
+            const productId = urlParams.get('id');
+
+            if (productId) {
+                fetch(`/product/${productId}`)
+                    .then(response => response.json())
+                    .then(product => {
+                        const productDetails = document.getElementById('product-details');
+                        productDetails.innerHTML = `
+                            <div class="product-details-container">
+                                <img src="${product.Image_URL}" alt="${product.Title}">
+                                <div class="product-info">
+                                    <h2>${product.Title}</h2>
+                                    <p>${product.Description}</p>
+                                    <p class="price">₹${product.Price} <span class="product_oldprice">₹${product.old_price}</span></p>
+                                    <p class="discount">${product.discount}% off</p>
+                                    <div class="product-rating">⭐ ${product.rating} (${product.reviews})</div>
+                                    <button class="add-to-cart" onclick="addToCart(${product.Product_ID}, '${product.Title}', ${product.Price},'${product.Image_URL}')">Add to Cart</button>
+                                </div>
+                            </div>
+                        `;
+                    })
+                    .catch(error => {
+                        console.error('Error fetching product details:', error);
+                    });
+            } else {
+                document.getElementById('product-details').innerText = 'Product not found';
+            }
+        });
+
+        function addToCart(productId, productName, productPrice, productImageUrl) {
+            let cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+            let existingItem = cartItems.find(item => item.productId === productId);
+            if (existingItem) {
+                existingItem.quantity++;
+            } else {
+                cartItems.push({ productId, productName, productPrice, productImageUrl, quantity: 1 });
+            }
+            localStorage.setItem('cart', JSON.stringify(cartItems));
+            window.location.href = 'cartpage.html'; // Redirect to cart page
+        }
+    </script>
+</body>
+</html>

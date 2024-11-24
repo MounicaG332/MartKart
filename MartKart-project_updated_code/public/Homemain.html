@@ -1,0 +1,132 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home MartKart</title>
+    <link rel="icon" href="img/logo martkart.png">
+    <link rel="stylesheet" href="Homecssfile.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav">
+            <h1>MartKart</h1>
+        </div>
+        <div class="right">
+            <input type="checkbox" id="check">
+            <label for="check" class="checkBtn">
+                <i class="fa fa-bars"></i>
+            </label>
+            <ul class="list">
+                <li><a href="">Home</a></li>
+                <li><a href="cartpage.html">Cart</a></li>
+                <li><a href="review-page.html">Review</a></li>
+                <li><a button class="btn" onclick="logout()">Logout</button></a></li>
+            </ul>
+        </div> 
+    </nav>
+    
+    <div class="swiper-container">
+        <div class="swiper-wrapper">
+            <div class="swiper-slide">
+                <img src="img/profile.jpg" alt="Image 1">
+            </div>
+            <div class="swiper-slide">
+                <img src="img/profile1.1.jpg" alt="Image 2">
+            </div>
+            <div class="swiper-slide">
+                <img src="img/profile2.jpg" alt="Image 3">
+            </div>
+            <div class="swiper-slide">
+                <img src="img/profile3.webp" alt="Image 4">
+            </div>
+        </div>
+        <div class="swiper-pagination"></div>
+        <div class="swiper-button-next"></div>
+        <div class="swiper-button-prev"></div>
+    </div>
+
+    <div class="search">
+        <input type="text" class="search-box" placeholder="search brand, product">
+        <button class="search-btn">search</button>
+    </div>
+
+    <div class="product-grid" id="product-grid">
+        <!-- Products will be inserted here dynamically -->
+    </div>
+
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <script>
+        function logout() {
+            window.location.href = 'login.html';
+        }
+
+        function searchProducts() {
+            let searchInput = document.querySelector('.search-box').value.toLowerCase();
+            let productContainers = document.querySelectorAll('.product-container');
+            productContainers.forEach(container => {
+                let productName = container.querySelector('.product-details h2').textContent.toLowerCase();
+                if (productName.includes(searchInput)) {
+                    container.style.display = 'flex';
+                } else {
+                    container.style.display = 'none';
+                }
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            var swiper = new Swiper('.swiper-container', {
+                loop: true,
+                pagination: { el: '.swiper-pagination', clickable: true },
+                navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' },
+                autoplay: { delay: 3000, disableOnInteraction: false }
+            });
+            fetchProducts(); // Call the function to fetch products when the page loads
+            document.querySelector('.search-box').addEventListener('input', searchProducts);
+            document.querySelector('.search-btn').addEventListener('click', searchProducts);
+        });
+
+        function fetchProducts() {
+            fetch('/products')
+                .then(response => response.json())
+                .then(products => {
+                    const productGrid = document.getElementById('product-grid');
+                    products.forEach(product => {
+                        const productContainer = document.createElement('div');
+                        productContainer.classList.add('product-container');
+                        productContainer.innerHTML = `
+                            <img style="height:300px;" src="${product.Image_URL}" alt="${product.Title}">
+                            <div class="product-details">
+                                <h2>${product.Title}</h2>
+                                <p>${product.Description}</p>
+                                <p class="price">₹${product.Price} <span class="product_oldprice">₹${product.old_price}</span></p>
+                                <p class="discount">${product.discount}% off</p>
+                                <div class="product-rating">⭐ ${product.rating} (${product.reviews})</div>
+                            </div>
+                            <button class="add-to-cart" onclick="addToCart(${product.Product_ID}, '${product.Title}', ${product.Price},'${product.Image_URL}')">Add to Cart</button>
+                        `;
+                        productGrid.appendChild(productContainer);
+                    });
+                });
+        } 
+        function redirectToProduct(productId) {
+            window.location.href = `productpage.html?id=${productId}`;
+        }
+
+        function addToCart(productId, productName, productPrice, productImageUrl) {
+            let cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+            let existingItem = cartItems.find(item => item.productId === productId);
+            if (existingItem) {
+                existingItem.quantity++;
+            } else {
+                cartItems.push({ productId, productName, productPrice, productImageUrl, quantity: 1 });
+            }
+            localStorage.setItem('cart', JSON.stringify(cartItems));
+            window.location.href = 'cartpage.html'; // Redirect to cart page
+        }
+    </script>
+</body>
+</html>

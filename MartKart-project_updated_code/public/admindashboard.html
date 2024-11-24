@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="dashboard.css">
+</head>
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>Admin Panel</h2>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="admindashboard.html">Dashboard</a></li>
+                    <li><a href="userdash.html">Users</a></li>
+                    <li><a href="productdash.html">Products</a></li>
+                    <li><a href="#">Orders</a></li>
+                    <li><a href="#">Settings</a></li>
+                </ul>
+            </nav>
+        </aside>
+        <main class="main-content">
+            <div class="header">
+                <h1>Dashboard</h1>
+                <div class="profile">
+                    <span>MartKart</span>
+                    <img src="img/logo martkart.png" alt="Admin Profile">
+                </div>
+            </div>
+            <div class="content">
+                <div class="cards">
+                    <div class="card">
+                        <h3>Users</h3>
+                        <p id="user-count">Loading...</p>
+                    </div>
+                    <div class="card">
+                        <h3>Products</h3>
+                        <p id="product-count">Loading...</p>
+                    </div>
+                    <div class="card">
+                        <h3>Orders</h3>
+                        <p id="order-count">Loading...</p>
+                    </div>
+                </div>
+            </div>
+        
+                    </main>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchDashboardCounts();
+        });
+
+        async function fetchDashboardCounts() {
+            try {
+                const response = await fetch('/api/dashboard-counts');
+                const data = await response.json();
+
+                document.getElementById('user-count').innerText = data.user_count;
+                document.getElementById('product-count').innerText = data.product_count;
+                document.getElementById('order-count').innerText = data.order_count;
+            } catch (error) {
+                console.error('Error fetching dashboard counts:', error);
+            }
+        }
+
+    </script>
+</body>
+</html>
